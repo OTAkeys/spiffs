@@ -545,7 +545,7 @@ s32_t spiffs_phys_wr(
 #endif
     u32_t addr,
     u32_t len,
-    u8_t *src);
+    const u8_t *src);
 
 s32_t spiffs_phys_cpy(
     spiffs *fs,
@@ -619,11 +619,10 @@ s32_t spiffs_obj_lu_find_id_and_span_by_phdr(
 
 // ---------------
 
-s32_t spiffs_page_allocate_data(
-    spiffs *fs,
+s32_t spiffs_page_allocate_data(spiffs *fs,
     spiffs_obj_id obj_id,
     spiffs_page_header *ph,
-    u8_t *data,
+    const u8_t *data,
     u32_t len,
     u32_t page_offs,
     u8_t finalize,
@@ -696,16 +695,15 @@ s32_t spiffs_object_open_by_page(
     spiffs_flags flags,
     spiffs_mode mode);
 
-s32_t spiffs_object_append(
-    spiffs_fd *fd,
+s32_t spiffs_object_append(spiffs_fd *fd,
     u32_t offset,
-    u8_t *data,
+    const u8_t *data,
     u32_t len);
 
 s32_t spiffs_object_modify(
     spiffs_fd *fd,
     u32_t offset,
-    u8_t *data,
+    const u8_t *data,
     u32_t len);
 
 s32_t spiffs_object_read(
@@ -807,8 +805,8 @@ s32_t spiffs_object_index_consistency_check(
 // checked in test builds, otherwise plain memcpy (unless already defined)
 #ifdef _SPIFFS_TEST
 #define _SPIFFS_MEMCPY(__d, __s, __l) do { \
-    intptr_t __a1 = (intptr_t)((u8_t*)(__s)); \
-    intptr_t __a2 = (intptr_t)((u8_t*)(__s)+(__l)); \
+    intptr_t __a1 = (intptr_t)((const u8_t*)(__s)); \
+    intptr_t __a2 = (intptr_t)((const u8_t*)(__s)+(__l)); \
     intptr_t __b1 = (intptr_t)((u8_t*)(__d)); \
     intptr_t __b2 = (intptr_t)((u8_t*)(__d)+(__l)); \
     if (__a1 <= __b2 && __b1 <= __a2) { \
